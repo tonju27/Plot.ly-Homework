@@ -21,7 +21,7 @@ function DrawBargraph(sampleId) {
         var sample_values = result.sample_values;
         // console.log(sample_values);
 
-        yticks = otu_ids.slice(0, 10).map(otuId => 'OTU ${otuID}').reverse(); //TBO
+        var yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse(); //TBO 
 
         var barData = {
             x: sample_values.slice(0, 10).reverse(), //TBO
@@ -35,7 +35,7 @@ function DrawBargraph(sampleId) {
 
         var barLayout = {
             title: "Top 10 Bacteria Cultures Found",
-            margin: {t: 100, l: 100, r: 100, b: 30}
+            margin: {l: 100, r: 100, t: 100, b: 100}
         }
 
         Plotly.newPlot("bar", barArray, barLayout);
@@ -64,35 +64,30 @@ function DrawBubblechart(sampleId) {
         var sample_values = result.sample_values;
         // console.log(sample_values);
 
-        yticks = otu_ids.slice(0, 10).map(otuId => 'OTU ${otuID}').reverse(); //TBO
-
-
-
-
-
     var bubbleData = {
-        x: samples.otu_ids,
-        y: samples.sample_values,
+        x: otu_ids,
+        y: sample_values,
         mode: "markers",
         marker: {
-            size: samples.sample_values,
-            color: samples.otu_ids
+            size: sample_values,
+            color: otu_ids,
+            colorscale: "Earth"
         },
-        text: samples.otu_labels
+        // text: samples.otu_labels
 
     };
 
 
     var bubbleLayout = {
-        xaxis:{title: "OTU ID"},
-        height: 600,
-        width: 1000
-    };
+        title: "Bacteria Cultures Per Sample",
+        margin: { t: 0 },
+        xaxis: { title: "OTU ID" },
+        margin: { t: 30}
+      };
 
     var bubbleArray = [bubbleData]
 
-    Plotly.newPlot("bubble", bubbleData, bubbleLayout); 
-
+    Plotly.newPlot("bubble", bubbleArray, bubbleLayout); 
 
 });
 
@@ -101,6 +96,9 @@ function DrawBubblechart(sampleId) {
 
 function ShowMetadata(sampleId) {
     console.log("ShowMetadata(${sampleId})");
+
+
+
 
 }
 
