@@ -73,16 +73,19 @@ function DrawBubblechart(sampleId) {
             color: otu_ids,
             colorscale: "Earth"
         },
-        // text: samples.otu_labels
 
     };
 
 
     var bubbleLayout = {
         title: "Bacteria Cultures Per Sample",
-        margin: { t: 0 },
         xaxis: { title: "OTU ID" },
-        margin: { t: 30}
+        margin: {
+            l: 100,
+            r: 100,
+            t: 100,
+            b: 30
+        }
       };
 
     var bubbleArray = [bubbleData]
@@ -97,8 +100,24 @@ function DrawBubblechart(sampleId) {
 function ShowMetadata(sampleId) {
     console.log("ShowMetadata(${sampleId})");
 
+    d3.json("samples.json").then(data => {
+        console.log(data);
 
+        var metadata = data.metadata;
+        var resultArray = metadata.filter(meta => meta.id.toString() == sampleId);
+        var result = resultArray[0];
+        // console.log(result);
+        
+        var screen = d3.select("#sample-metadata");
 
+        // clear any existing metadata
+        screen.html("");
+
+        Object.entries(result).forEach(([key, value]) => {
+            screen.append("h6").text(`${key.toUpperCase()}: ${value}`);
+        });
+
+    });
 
 }
 
