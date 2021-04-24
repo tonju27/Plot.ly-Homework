@@ -121,30 +121,44 @@ function ShowMetadata(sampleId) {
 
 }
 
+// Adapted the Gauge Chart from https://plot.ly/javascript/gauge-charts/
 function DrawGaugechart(sampleId) {
     console.log("DrawGaugechart(${sampleId})");
 
     d3.json("samples.json").then(data => {
         console.log(data);
 
-        var metadata = data.metadata;
-        var resultArray = metadata.filter(meta => meta.id.toString() == sampleId);
+        var samples = data.samples;
+        var resultArray = samples.filter(s => s.id == sampleId);
         var result = resultArray[0];
-        // console.log(result);
         
-        var screen = d3.select("#sample-metadata");
+        var data = [
+            {
+            domain: { x: [0, 1], y: [0, 1] },
+            title: { text: `Weekly Washing Frequency ` },
+            type: "indicator",
+            mode: "gauge+number+delta",
+            gauge: { axis: { range: [null, 9] },
+                     steps: [
+                      { range: [0, 2], color: "yellow" },
+                      { range: [2, 4], color: "cyan" },
+                      { range: [4, 6], color: "teal" },
+                      { range: [6, 8], color: "lime" },
+                      { range: [8, 9], color: "green" },
+                    ]}
+                
+            }
+          ];
 
-        // clear any existing metadata
-        screen.html("");
-
-        Object.entries(result).forEach(([key, value]) => {
-            screen.append("h6").text(`${key.toUpperCase()}: ${value}`);
-        });
-
-    });
+          var layout = { 
+            width: 700, 
+            height: 600, 
+            margin: { t: 20, b: 40, l:100, r:100 } 
+          };
+        Plotly.newPlot("gauge", data, layout);
+      });
 
 }
-
 
 
 function optionChanged(newSampleId) {
