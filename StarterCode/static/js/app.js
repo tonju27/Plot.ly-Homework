@@ -121,13 +121,39 @@ function ShowMetadata(sampleId) {
 
 }
 
+function DrawGaugechart(sampleId) {
+    console.log("DrawGaugechart(${sampleId})");
+
+    d3.json("samples.json").then(data => {
+        console.log(data);
+
+        var metadata = data.metadata;
+        var resultArray = metadata.filter(meta => meta.id.toString() == sampleId);
+        var result = resultArray[0];
+        // console.log(result);
+        
+        var screen = d3.select("#sample-metadata");
+
+        // clear any existing metadata
+        screen.html("");
+
+        Object.entries(result).forEach(([key, value]) => {
+            screen.append("h6").text(`${key.toUpperCase()}: ${value}`);
+        });
+
+    });
+
+}
+
+
+
 function optionChanged(newSampleId) {
     console.log("User selected ${newSampleId}");
-
+    // Get new data each time a new sample is selected
     DrawBargraph(newSampleId);
     DrawBubblechart(newSampleId);
     ShowMetadata(newSampleId);
-
+    DrawGaugechart(newSampleId);
 }
 
 function initDashboard() {
@@ -154,18 +180,14 @@ function initDashboard() {
     DrawBargraph(id);
     DrawBubblechart(id);
     ShowMetadata(id);
+    DrawGaugechart(id);
 
 });
 
 
 
-// Update the bargraph
-// UPdate the bubblechart
-// Update the demographic information
-
-
-
 }
+
 
 initDashboard();
 
