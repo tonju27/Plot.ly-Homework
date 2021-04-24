@@ -132,12 +132,16 @@ function DrawGaugechart(sampleId) {
         var resultArray = samples.filter(s => s.id == sampleId);
         var result = resultArray[0];
         
+        // var screen2 = d3.select("#gauge");
+
         var data = [
             {
             domain: { x: [0, 1], y: [0, 1] },
             title: { text: `Weekly Washing Frequency ` },
+            // value: 8,
             type: "indicator",
-            mode: "gauge+number+delta",
+            mode: "gauge+number",
+            // delta: { reference: 400, increasing: { color: "RebeccaPurple" } },
             gauge: { axis: { range: [null, 9] },
                      steps: [
                       { range: [0, 2], color: "yellow" },
